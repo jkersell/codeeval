@@ -8,6 +8,13 @@ typedef struct Stack {
     int maxSize;
 } Stack;
 
+void grow(Stack* stack) {
+    stack->maxSize *= 2;
+    char* newArr = (char*) malloc(stack->maxSize * sizeof(char));
+    memcpy(stack->arr, newArr, stack->size);
+    stack->arr = newArr;
+}
+
 void stack_init(Stack* stack, int initSize) {
     stack->maxSize = initSize;
     stack->size = 0;
@@ -15,6 +22,9 @@ void stack_init(Stack* stack, int initSize) {
 }
 
 void stack_push(Stack* stack, char value) {
+    if (stack->size == stack->maxSize) {
+        grow(stack);
+    }
     stack->arr[stack->size] = value;
     stack->size++;
 }
@@ -23,6 +33,7 @@ char stack_pop(Stack* stack) {
     stack->size--;
     return stack->arr[stack->size];
 }
+
 
 int main(int argc, char* argv[]) {
     FILE* fp = fopen(argv[1], "r");
