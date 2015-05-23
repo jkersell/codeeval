@@ -1,16 +1,17 @@
 #include "stdio.h"
+#include "stdlib.h"
 #include "string.h"
 
-#define INIT_SIZE 5
-
 typedef struct Stack {
-    char arr[INIT_SIZE];
+    char* arr;
     int size;
+    int maxSize;
 } Stack;
 
-void stack_init(Stack* stack) {
-    memset(stack->arr, 0, INIT_SIZE);
+void stack_init(Stack* stack, int initSize) {
+    stack->maxSize = initSize;
     stack->size = 0;
+    stack->arr = (char*) malloc(initSize * sizeof(char));
 }
 
 void stack_push(Stack* stack, char value) {
@@ -27,7 +28,7 @@ int main(int argc, char* argv[]) {
     FILE* fp = fopen(argv[1], "r");
 
     Stack myStack;
-    stack_init(&myStack);
+    stack_init(&myStack, 5);
 
     if (fp != NULL) {
         int c = fgetc(fp);
